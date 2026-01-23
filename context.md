@@ -266,9 +266,19 @@ npm run preview  # Preview production build
 3. Generate 15 Makkah audio files using ElevenLabs
 4. Update makkah-places.ts with audioUrl for all 15 places
 
-### Images (Optional)
-- Add actual images for each place to public/images/
-- Update imageUrl in data files
+### Images ✅ PARTIALLY DONE
+- **8 places have real images** (WebP + JPG at 1280x720):
+  - Madinah: masjid-nabawi, masjid-quba
+  - Makkah: masjid-haram, safa-marwa, zamzam, cave-hira, mina, arafat
+- **19 places use gradient placeholder** (no good royalty-free images found)
+- Images sourced from Unsplash (free license)
+- `PlaceCard.tsx` updated with `<picture>` element for WebP/JPG fallback
+- See `public/images/CREDITS.md` for attributions
+- To add more images:
+  1. Download from Unsplash/Wikimedia Commons
+  2. Process: `magick input.jpg -resize 1280x720^ -gravity center -extent 1280x720 -quality 85 output.jpg`
+  3. Convert: `cwebp -q 80 output.jpg -o output.webp`
+  4. Place in `public/images/{city}/`
 
 ### Testing
 - Test on actual mobile devices
@@ -286,7 +296,10 @@ npm run preview  # Preview production build
 | `src/components/AudioPlayer.tsx` | Audio player component |
 | `src/components/PlaceDetail.tsx` | Detail sheet with audio integration |
 | `src/index.css` | Theme colors and animations |
+| `src/components/PlaceCard.tsx` | Card with image display + fallback |
 | `public/audio/` | Audio file storage |
+| `public/images/` | Place images (WebP + JPG) |
+| `public/images/CREDITS.md` | Image attributions |
 
 ---
 

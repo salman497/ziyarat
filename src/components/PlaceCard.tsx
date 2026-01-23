@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { MapPin, CheckCircle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -28,6 +29,11 @@ const categoryLabels: Record<string, string> = {
 }
 
 export function PlaceCard({ place, isVisited, onClick, index }: PlaceCardProps) {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
+  const webpUrl = place.imageUrl.replace('.jpg', '.webp')
+
   return (
     <Card
       className={cn(
@@ -39,17 +45,40 @@ export function PlaceCard({ place, isVisited, onClick, index }: PlaceCardProps) 
       onClick={onClick}
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+        {/* Gradient placeholder - always visible as fallback */}
+        <div className={cn(
+          "absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20 transition-opacity duration-300",
+          imageLoaded && !imageError ? "opacity-0" : "opacity-100"
+        )}>
           <span className="text-4xl font-bold text-primary/30">{place.nameArabic}</span>
         </div>
+
+        {/* Actual image with WebP support */}
+        {!imageError && (
+          <picture>
+            <source srcSet={webpUrl} type="image/webp" />
+            <img
+              src={place.imageUrl}
+              alt={place.nameEnglish}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+                imageLoaded ? "opacity-100" : "opacity-0"
+              )}
+            />
+          </picture>
+        )}
+
         {isVisited && (
-          <div className="absolute top-2 right-2 rounded-full bg-primary p-1">
+          <div className="absolute top-2 right-2 rounded-full bg-primary p-1 z-10">
             <CheckCircle className="h-4 w-4 text-primary-foreground" />
           </div>
         )}
         <Badge
           className={cn(
-            "absolute bottom-2 left-2",
+            "absolute bottom-2 left-2 z-10",
             categoryColors[place.category]
           )}
         >
