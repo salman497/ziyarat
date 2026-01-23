@@ -1,6 +1,7 @@
 import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CitySelector } from "@/components/CitySelector"
+import { DonateButton } from "@/components/DonateButton"
 
 interface HomePageProps {
   isDark: boolean
@@ -14,6 +15,7 @@ export default function HomePage({ isDark, toggleTheme }: HomePageProps) {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center px-4">
           <h1 className="flex-1 text-lg font-semibold tracking-tight">Ziyarat Guide</h1>
+          <DonateButton />
           <Button
             variant="ghost"
             size="icon"

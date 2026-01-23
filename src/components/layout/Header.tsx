@@ -1,6 +1,7 @@
 import { ArrowLeft, Moon, Sun } from "lucide-react"
 import { useNavigate } from "react-router"
 import { Button } from "@/components/ui/button"
+import { DonateButton } from "@/components/DonateButton"
 
 interface HeaderProps {
   title: string
@@ -29,11 +30,11 @@ export function Header({ title, showBack = false, isDark, toggleTheme }: HeaderP
 
         <h1 className="flex-1 text-lg font-semibold tracking-tight">{title}</h1>
 
+        <DonateButton />
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleTheme}
-          className="ml-auto"
         >
           {isDark ? (
             <Sun className="h-5 w-5" />
