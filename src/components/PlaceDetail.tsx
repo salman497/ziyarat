@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { MapPin, ExternalLink, CheckCircle, Star } from "lucide-react"
 import {
   Sheet,
@@ -50,10 +51,29 @@ export function PlaceDetail({
   isVisited,
   onMarkVisited,
 }: PlaceDetailProps) {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
+  // Reset image state when place changes
+  useEffect(() => {
+    setImageLoaded(false)
+    setImageError(false)
+  }, [place?.id])
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      onClose()
+      setImageLoaded(false)
+      setImageError(false)
+    }
+  }
+
   if (!place) return null
 
+  const webpUrl = place.imageUrl.replace('.jpg', '.webp')
+
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent side="bottom" className="h-[90vh] p-0 sm:max-w-xl sm:mx-auto sm:rounded-t-xl">
         <ScrollArea className="h-full">
           <div className="p-6">
@@ -71,11 +91,33 @@ export function PlaceDetail({
               </div>
             </SheetHeader>
 
-            {/* Hero image placeholder */}
+            {/* Hero image */}
             <div className="relative aspect-video rounded-lg overflow-hidden bg-muted mb-4">
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+              {/* Gradient placeholder - always visible as fallback */}
+              <div className={cn(
+                "absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20 transition-opacity duration-300",
+                imageLoaded && !imageError ? "opacity-0" : "opacity-100"
+              )}>
                 <span className="text-5xl font-bold text-primary/30">{place.nameArabic}</span>
               </div>
+
+              {/* Actual image with WebP support */}
+              {!imageError && (
+                <picture>
+                  <source srcSet={webpUrl} type="image/webp" />
+                  <img
+                    src={place.imageUrl}
+                    alt={place.nameEnglish}
+                    loading="lazy"
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageError(true)}
+                    className={cn(
+                      "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+                      imageLoaded ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </picture>
+              )}
             </div>
 
             {/* Quick info */}
