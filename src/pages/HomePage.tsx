@@ -45,9 +45,7 @@ export default function HomePage({ isDark, toggleTheme }: HomePageProps) {
 
         {/* Trip info */}
         <section className="mt-12 max-w-md mx-auto text-center opacity-75">
-          <p className="text-sm text-muted-foreground">
-            Your blessed journey: Karachi → Madinah (2 nights) → Makkah (3 nights) → Riyadh → Karachi
-          </p>
+          
           <p className="text-xs text-muted-foreground mt-2">
             Jan 24-31, 2026
           </p>
