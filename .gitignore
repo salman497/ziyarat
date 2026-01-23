@@ -30,6 +30,13 @@ Thumbs.db
 # Test coverage
 coverage/
 
+# TypeScript build info
+*.tsbuildinfo
+
+# Vite generated
+vite.config.js
+vite.config.d.ts
+
 # Misc
 *.tgz
 .npm
